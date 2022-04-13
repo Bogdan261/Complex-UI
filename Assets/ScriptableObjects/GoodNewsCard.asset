@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title: Good News
   ShortDescription: Everything is chill!
+  ImagesList: {fileID: 11400000, guid: fcdc554aa225b71448b5eacb37c1632c, type: 2}

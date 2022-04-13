@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title: Bad News
   ShortDescription: Stuff is really bad
+  ImagesList: {fileID: 11400000, guid: 03269d424c718174384f8ebd2d69213a, type: 2}

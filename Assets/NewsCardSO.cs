@@ -6,4 +6,6 @@ public class NewsCardSO : ScriptableObject
     public string Title;
 
     public string ShortDescription;
+
+    public ImagesListSO ImagesList;
 }
