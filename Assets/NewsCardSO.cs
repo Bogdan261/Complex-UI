@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewNewsCard", menuName = "News/Card")]
-public class NewsCardScriptableObject : ScriptableObject
+public class NewsCardSO : ScriptableObject
 {
     public string Title;
 
