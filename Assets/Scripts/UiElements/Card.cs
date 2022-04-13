@@ -1,6 +1,5 @@
-﻿using Assets.Scripts.UiElements.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Helpers.ExtensionMethods;
+using Assets.Scripts.UiElements.Interfaces;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -20,7 +19,7 @@ namespace Assets.Scripts.UiElements
 
         private const string descriptionTag = "Description";
 
-        private void Start()
+        private void Awake()
         {
             SetTextElements();
             SetOpenButton();
@@ -28,15 +27,27 @@ namespace Assets.Scripts.UiElements
 
         public void SetDescriptionText(string text)
         {
-            descriptionText.text = text;
+            if (descriptionText != null)
+            {
+                descriptionText.text = text;
+            }
         }
 
         public void SetTitleText(string text)
-        {
-            titleText.text = text;
+        {          
+            if (titleText != null)
+            {
+                titleText.text = text;
+            }
         }
 
-        private void SetTextElements()
+        public void SetSwitchScreenCommand(Screen currentScreen, Screen targetScreen)
+        {
+            var buttonCommand = openButton.GetSwitchScreenCommand();
+            buttonCommand?.SetScreens(currentScreen, targetScreen);
+        }
+
+        public void SetTextElements()
         {
             var textComponents = GetComponentsInChildren<TextMeshProUGUI>();
 

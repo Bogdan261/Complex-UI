@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79524b26507ceb94094848eb2b832d42, type: 3}
   m_Name: GoodNewsCard
   m_EditorClassIdentifier: 
-  Title: Bad News
-  ShortDescription: Everything is very bad!
+  Title: Good News
+  ShortDescription: Everything is chill!
