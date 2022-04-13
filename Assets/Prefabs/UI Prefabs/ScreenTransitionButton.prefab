@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 3645918810839371038}
   - component: {fileID: 9098774296701841841}
   m_Layer: 5
-  m_Name: PanelTransitionButton
+  m_Name: ScreenTransitionButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,4 +280,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3838cb905b599a247a08a808bbee5bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentPanel: {fileID: 0}
   nextPanel: {fileID: 0}
