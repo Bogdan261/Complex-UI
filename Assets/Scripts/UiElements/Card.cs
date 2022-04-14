@@ -41,13 +41,19 @@ namespace Assets.Scripts.UiElements
             }
         }
 
-        public void SetSwitchScreenCommand(Screen currentScreen, Screen targetScreen)
+        public void ConfigureSwitchScreenCommand(Screen currentScreen, Screen targetScreen)
         {
             var buttonCommand = openButton.GetSwitchScreenCommand();
             buttonCommand?.SetScreens(currentScreen, targetScreen);
         }
 
-        public void SetTextElements()
+        public void ConfigureImagesListCommand(ImagesListSO imagesList)
+        {
+            var buttonCommand = openButton.GetImageListCommand();
+            buttonCommand?.SetImagesList(imagesList);
+        }
+
+        private void SetTextElements()
         {
             var textComponents = GetComponentsInChildren<TextMeshProUGUI>();
 

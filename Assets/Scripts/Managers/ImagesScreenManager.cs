@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-    public class ImagesScreenManager : MonoBehaviour
+    public class ImagesScreenManager : ScreenManager
     {
         public static ImagesScreenManager Instance;
 
         [HideInInspector]
-        public ImagesListSO ImagesList;
+        public ImagesListSO ImagesListSO;
 
         private void Awake()
         {

@@ -10,5 +10,11 @@ namespace Assets.Scripts.Helpers.ExtensionMethods
            var buttonGo = button.gameObject;
            return buttonGo.GetComponent<SwitchScreenCommand>();
         }
+
+        public static SetImageListCommand GetImageListCommand(this Button button)
+        {
+            var buttonGo = button.gameObject;
+            return buttonGo.GetComponent<SetImageListCommand>();
+        }
     }
 }

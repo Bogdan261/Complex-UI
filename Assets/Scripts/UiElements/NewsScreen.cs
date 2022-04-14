@@ -30,7 +30,8 @@ namespace Assets.Scripts.UiElements
                 result.transform.SetParent(newsScrollViewContent.transform);              
                 result.SetTitleText(newsCard.Title);
                 result.SetDescriptionText(newsCard.ShortDescription);
-                result.SetSwitchScreenCommand(this, nextScreen);
+                result.ConfigureSwitchScreenCommand(this, nextScreen);
+                result.ConfigureImagesListCommand(newsCard.ImagesList);
             }
         }
     }
