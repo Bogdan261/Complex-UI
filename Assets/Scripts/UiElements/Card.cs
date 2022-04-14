@@ -41,7 +41,7 @@ namespace Assets.Scripts.UiElements
             }
         }
 
-        public void ConfigureSwitchScreenCommand(Screen currentScreen, Screen targetScreen)
+        public void ConfigureSwitchScreenCommand(UiElements.Screens.Screen currentScreen, UiElements.Screens.Screen targetScreen)
         {
             var buttonCommand = openButton.GetSwitchScreenCommand();
             buttonCommand?.SetScreens(currentScreen, targetScreen);

@@ -1,7 +1,6 @@
 ﻿namespace Assets.Scripts.UiElements.Interfaces
 {
-    public interface IScreen
+    public interface IPopUp
     {
-      
     }
 }

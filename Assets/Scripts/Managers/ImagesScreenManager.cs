@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Managers
 {
@@ -8,6 +9,9 @@ namespace Assets.Scripts.Managers
 
         [HideInInspector]
         public ImagesListSO ImagesListSO;
+
+        [HideInInspector]
+        public Image ImageToDisplay;
 
         private void Awake()
         {
