@@ -15,6 +15,11 @@ namespace Assets.Scripts.Managers
 
         private void Awake()
         {
+            CreateSingletonInstance();
+        }
+
+        private void CreateSingletonInstance()
+        {
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
