@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.UiElements.Screens
 {
-    public class DonationFormScreen : Screen
+    public class PercentageDivisionSlidersScreen : Screen
     {       
         [SerializeField]
         private FixedValueSlider mainValueSlider;
