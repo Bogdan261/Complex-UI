@@ -121,7 +121,10 @@ namespace Assets.Scripts.UiElements.Screens
             var numberOfSlidersToDivide = percentageSliders.Count() - 1;
 
             var differenceToAdd = (sliderPreviousValue - currentSlider.GetSliderCurrentValue()) / numberOfSlidersToDivide;
-            
+
+
+            //we need to start from the lowest value sliders. When they are decreasing and reach value = 0,
+                 // the remaining "to decrease" value needs to be splitted evenly across the following sliders
             percentageSliders = percentageSliders.OrderBy(x => x.GetSliderCurrentValue()).ToList();
 
             var currentPosition = 0;
@@ -139,10 +142,10 @@ namespace Assets.Scripts.UiElements.Screens
                         newValue = 0;
                     }
                     else 
-                       if (newValue < 0.001f) //to avoid rounding leftovers
-                       {
-                            newValue = 0;
-                       }
+                    if (newValue < 0.001f) //to avoid rounding leftovers
+                    {
+                        newValue = 0;
+                    }
 
                     currentPosition++;
 
