@@ -1,14 +1,23 @@
-﻿using TMPro;
+﻿using Assets.Scripts.Helpers;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.UI.Slider;
 
 namespace Assets.Scripts.UiElements.Sliders
 {
+    [RequireComponent(typeof(Slider))]
     public class BasicSlider : MonoBehaviour
     {
+        [SerializeField]
+        protected string description;
+        
         protected Slider slider;
+
         protected TextMeshProUGUI sliderValueText;
+
+        protected TextMeshProUGUI sliderDescriptionText;
 
         protected float sliderValueMultiplier;
 
@@ -17,8 +26,12 @@ namespace Assets.Scripts.UiElements.Sliders
         protected virtual void Awake()
         {
             slider = GetComponent<Slider>();
-            sliderValueText = GetComponentInChildren<TextMeshProUGUI>();
+            sliderValueText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Value));
+            sliderDescriptionText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Description));
+
             SetValueText();
+            SetDescriptionText();
+
             slider.onValueChanged.AddListener(delegate { SetValueText(); });
         }
 
@@ -52,11 +65,20 @@ namespace Assets.Scripts.UiElements.Sliders
         {
             this.sliderValueMultiplier = sliderValueMultiplier;
         }
+
+        public void RefreshValueText()
+        {
+            SetValueText();
+        }    
       
         protected void SetValueText()
         {
             sliderValueText.text = GetSliderAmount().ToString() + currency;
         }
-      
+
+        protected void SetDescriptionText()
+        {
+            sliderDescriptionText.text = description;
+        }
     }
 }

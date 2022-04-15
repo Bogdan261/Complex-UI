@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Helpers.ExtensionMethods;
+﻿using Assets.Scripts.Helpers;
+using Assets.Scripts.Helpers.ExtensionMethods;
 using Assets.Scripts.UiElements.Interfaces;
 using System.Linq;
 using TMPro;
@@ -13,11 +14,7 @@ namespace Assets.Scripts.UiElements
 
         private TextMeshProUGUI descriptionText;
 
-        private Button openButton;
-
-        private const string titleTag = "Title";
-
-        private const string descriptionTag = "Description";
+        private Button openButton;       
 
         private void Awake()
         {
@@ -57,8 +54,8 @@ namespace Assets.Scripts.UiElements
         {
             var textComponents = GetComponentsInChildren<TextMeshProUGUI>();
 
-            titleText = textComponents?.Where(x => x.gameObject.CompareTag(titleTag)).FirstOrDefault();
-            descriptionText = textComponents?.Where(x => x.gameObject.CompareTag(descriptionTag)).FirstOrDefault();
+            titleText = textComponents?.Where(x => x.gameObject.CompareTag(ProjectTags.Title)).FirstOrDefault();
+            descriptionText = textComponents?.Where(x => x.gameObject.CompareTag(ProjectTags.Description)).FirstOrDefault();
         }
 
         private void SetOpenButton()
