@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.UiElements.Sliders;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,18 +6,19 @@ using UnityEngine;
 namespace Assets.Scripts.UiElements.Screens
 {
     public class PercentageDivisionSlidersScreen : Screen
-    {       
+    {              
+        [HideInInspector]
+        public static PercentageDivisionSlidersScreen Instance;
+
         [SerializeField]
         private CustomSlider mainValueSlider;
 
         [SerializeField]
-        private List<CustomSlider> percentageSliders;
+        private CustomSlider percentageSliderPrefab;
 
         private Dictionary<CustomSlider, float> slidersPreviousValue;
 
-        private const float valueSliderMinValue = 1;
-        private const float valueSliderMaxValue = 5;
-        private const float sliderValueMultiplier = 40;
+        private List<CustomSlider> instantiatedPercentageSliders;
 
         private const float percentageSlidersMinValue = 0;
         private const float percentageSlidersMaxValue = 100;
@@ -26,52 +26,67 @@ namespace Assets.Scripts.UiElements.Screens
 
         private bool isUpdating;
 
+        private void Awake()
+        {
+            instantiatedPercentageSliders = new List<CustomSlider>();
+
+            DefineSingleton();
+        }
+
         private void Start()
         {
-            isUpdating = false;       
+            isUpdating = false;
 
             slidersPreviousValue = new Dictionary<CustomSlider, float>();
-            ConfigureMainSlider();
+
+            AddMainSliderListener();
+
             ConfigurePercentageSliders();
-        }     
-
-        private void ConfigureMainSlider()
+        } 
+        
+        public void InstantiatePercentageSlider(string cause)
         {
-            mainValueSlider.SetWholeNumbers();
+            var result = Instantiate(percentageSliderPrefab);
+            result.transform.SetParent(gameObject.transform);
+            instantiatedPercentageSliders.Add(result);
+            result.SetDescriptionText(cause);
+        }
 
-            ConfigureSlider(mainValueSlider, minValue: valueSliderMinValue, maxValue: valueSliderMaxValue, currentValue: 1, valueMultiplier: sliderValueMultiplier);
-            var sliderEvent = mainValueSlider.GetSliderEvent();
-            sliderEvent.AddListener(delegate { UpdatePercentageSlidersMultiplier(); });
-        }       
-
+        private void AddMainSliderListener()
+        {
+            var mainValueSliderEvent = mainValueSlider.GetSliderEvent();
+            mainValueSliderEvent.AddListener(delegate { UpdatePercentageSlidersMultiplier(); });
+        }
+    
         private void ConfigurePercentageSliders()
         {
-            percentageSlidersValueMultiplier = sliderValueMultiplier * mainValueSlider.GetSliderCurrentValue() / percentageSlidersMaxValue;
+            percentageSlidersValueMultiplier =  mainValueSlider.GetTotalAmount() / percentageSlidersMaxValue;
 
-            for (int i = 0; i < percentageSliders.Count; i++)
+            for (int i = 0; i < instantiatedPercentageSliders.Count; i++)
             {
                 if (i == 0)
                 {
-                    ConfigurePercentageSlider(percentageSliders[i], minValue: percentageSlidersMinValue, maxValue: percentageSlidersMaxValue, 
+                    ConfigurePercentageSlider(instantiatedPercentageSliders[i], minValue: percentageSlidersMinValue, maxValue: percentageSlidersMaxValue, 
                         currentValue: percentageSlidersMaxValue, valueMultiplier: percentageSlidersValueMultiplier);
 
-                    slidersPreviousValue.Add(percentageSliders[i], percentageSlidersMaxValue);
+                    slidersPreviousValue.Add(instantiatedPercentageSliders[i], percentageSlidersMaxValue);
                 }
                 else
                 {
-                    ConfigurePercentageSlider(percentageSliders[i], minValue: percentageSlidersMinValue, maxValue: percentageSlidersMaxValue, 
+                    ConfigurePercentageSlider(instantiatedPercentageSliders[i], minValue: percentageSlidersMinValue, maxValue: percentageSlidersMaxValue, 
                         currentValue: percentageSlidersMinValue, valueMultiplier: 0);
 
-                    slidersPreviousValue.Add(percentageSliders[i], percentageSlidersMinValue);
+                    slidersPreviousValue.Add(instantiatedPercentageSliders[i], percentageSlidersMinValue);
                 }
             }
         }
 
+        //this method is duplicate. Need to extract it further
         private void ConfigureSlider(CustomSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier)
         {
-            slider.SetSliderIntervalValues(minValue, maxValue);
-            slider.SetSliderMultiplier(valueMultiplier);
-            slider.SetSliderCurrentValue(currentValue);
+            slider.SetIntervalValues(minValue, maxValue);
+            slider.SetValueMultiplier(valueMultiplier);
+            slider.SetCurrentValue(currentValue);
             slider.RefreshValueText();
         }
 
@@ -85,11 +100,11 @@ namespace Assets.Scripts.UiElements.Screens
 
         private void UpdatePercentageSlidersMultiplier()
         {
-            percentageSlidersValueMultiplier = sliderValueMultiplier * mainValueSlider.GetSliderCurrentValue() / percentageSlidersMaxValue;
+            percentageSlidersValueMultiplier = mainValueSlider.GetTotalAmount() / percentageSlidersMaxValue;
 
-            foreach (var percentageSlider in percentageSliders)
+            foreach (var percentageSlider in instantiatedPercentageSliders)
             {
-                percentageSlider.SetSliderMultiplier(percentageSlidersValueMultiplier);
+                percentageSlider.SetValueMultiplier(percentageSlidersValueMultiplier);
                 percentageSlider.RefreshValueText();
             }
         }
@@ -98,18 +113,18 @@ namespace Assets.Scripts.UiElements.Screens
         {
             if (!isUpdating)
             {
-                foreach (var percentageSlider in percentageSliders)
+                foreach (var percentageSlider in instantiatedPercentageSliders)
                 {
                     var sliderPreviousValue = slidersPreviousValue[percentageSlider];
 
-                    bool sliderValueChanged = sliderPreviousValue != percentageSlider.GetSliderCurrentValue();
+                    bool sliderValueChanged = sliderPreviousValue != percentageSlider.GetCurrentValue();
 
                     if (sliderValueChanged)
                     {
                         isUpdating = true; 
-                        var currentSliderValue = percentageSlider.GetSliderCurrentValue();
+                        var currentSliderValue = percentageSlider.GetCurrentValue();
                         slidersPreviousValue[percentageSlider] = currentSliderValue;
-                        percentageSlider.SetSliderMultiplier(percentageSlidersValueMultiplier);
+                        percentageSlider.SetValueMultiplier(percentageSlidersValueMultiplier);
                         percentageSlider.RefreshValueText();
 
                         UpdateOtherSliders(percentageSlider, sliderPreviousValue);
@@ -122,18 +137,18 @@ namespace Assets.Scripts.UiElements.Screens
         
         private void UpdateOtherSliders(CustomSlider currentSlider, float sliderPreviousValue)
         {
-            var numberOfSlidersToDivide = percentageSliders.Count() - 1;
+            var numberOfSlidersToDivide = instantiatedPercentageSliders.Count() - 1;
 
-            var differenceToAdd = (sliderPreviousValue - currentSlider.GetSliderCurrentValue()) / numberOfSlidersToDivide;
+            var differenceToAdd = (sliderPreviousValue - currentSlider.GetCurrentValue()) / numberOfSlidersToDivide;
 
 
             //we need to start from the lowest value sliders. When they are decreasing and reach value = 0,
                  // the remaining "to decrease" value needs to be splitted evenly across the following sliders
-            percentageSliders = percentageSliders.OrderBy(x => x.GetSliderCurrentValue()).ToList();
+            instantiatedPercentageSliders = instantiatedPercentageSliders.OrderBy(x => x.GetCurrentValue()).ToList();
 
             var currentPosition = 0;
 
-            foreach (var percentageSlider in percentageSliders)
+            foreach (var percentageSlider in instantiatedPercentageSliders)
                 if (percentageSlider != currentSlider)
                 {
                     var newValue = slidersPreviousValue[percentageSlider] + differenceToAdd;
@@ -154,9 +169,21 @@ namespace Assets.Scripts.UiElements.Screens
                     currentPosition++;
 
                     slidersPreviousValue[percentageSlider] = newValue;
-                    percentageSlider.SetSliderMultiplier(percentageSlidersValueMultiplier);
-                    percentageSlider.SetSliderCurrentValue(newValue);                    
+                    percentageSlider.SetValueMultiplier(percentageSlidersValueMultiplier);
+                    percentageSlider.SetCurrentValue(newValue);                    
                 }
-        }       
+        }
+        
+        private void DefineSingleton()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(Instance.gameObject);
+            }
+            else if (Instance == null)
+            {
+                Instance = this;
+            }
+        }
     }
 }

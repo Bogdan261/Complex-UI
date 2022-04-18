@@ -8,10 +8,7 @@ using UnityEngine.UI;
 namespace Assets.Scripts.UiElements.Sliders
 {   
     public class CustomSlider : Slider, ICustomSlider
-    {
-        [SerializeField]
-        protected string description;       
-       
+    {              
         protected TextMeshProUGUI sliderValueText;
 
         protected TextMeshProUGUI sliderDescriptionText;
@@ -25,13 +22,12 @@ namespace Assets.Scripts.UiElements.Sliders
             sliderValueText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Value));
             sliderDescriptionText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Description));
 
-            SetValueText();
-            SetDescriptionText();
+            SetValueText();          
 
             onValueChanged.AddListener(delegate { SetValueText(); });
         }
 
-        public float GetSliderAmount()
+        public float GetTotalAmount()
         {
             return value * sliderValueMultiplier;
         }
@@ -41,23 +37,23 @@ namespace Assets.Scripts.UiElements.Sliders
             return onValueChanged;
         }
 
-        public void SetSliderIntervalValues(float minValue, float maxValue)
+        public void SetIntervalValues(float minValue, float maxValue)
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
         }
 
-        public void SetSliderCurrentValue(float value)
+        public void SetCurrentValue(float value)
         {
             this.value = value;
         }
 
-        public float GetSliderCurrentValue()
+        public float GetCurrentValue()
         {
             return this.value;
         }
 
-        public void SetSliderMultiplier(float sliderValueMultiplier)
+        public void SetValueMultiplier(float sliderValueMultiplier)
         {
             this.sliderValueMultiplier = sliderValueMultiplier;
         }
@@ -71,15 +67,15 @@ namespace Assets.Scripts.UiElements.Sliders
         {
             wholeNumbers = true;
         }
-      
-        protected void SetValueText()
-        {
-            sliderValueText.text = GetSliderAmount().ToString() + currency;
-        }
 
-        protected void SetDescriptionText()
+        public void SetDescriptionText(string description)
         {
             sliderDescriptionText.text = description;
         }
+
+        protected void SetValueText()
+        {
+            sliderValueText.text = GetTotalAmount().ToString() + currency;
+        }      
     }
 }

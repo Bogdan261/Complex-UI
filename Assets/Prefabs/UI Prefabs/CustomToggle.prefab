@@ -478,6 +478,14 @@ PrefabInstance:
       propertyPath: m_ChildAlignment
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7879608003553425413, guid: 519e0754346893543a4984be22ad0466, type: 3}
+      propertyPath: m_ChildScaleWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879608003553425413, guid: 519e0754346893543a4984be22ad0466, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2037873500784376017, guid: 519e0754346893543a4984be22ad0466, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 519e0754346893543a4984be22ad0466, type: 3}
