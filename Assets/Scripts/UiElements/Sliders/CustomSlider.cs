@@ -3,18 +3,15 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.UI.Slider;
 
 namespace Assets.Scripts.UiElements.Sliders
 {
-    [RequireComponent(typeof(Slider))]
-    public class BasicSlider : MonoBehaviour
+   
+    public class CustomSlider : Slider
     {
         [SerializeField]
-        protected string description;
-        
-        protected Slider slider;
-
+        protected string description;       
+       
         protected TextMeshProUGUI sliderValueText;
 
         protected TextMeshProUGUI sliderDescriptionText;
@@ -24,41 +21,40 @@ namespace Assets.Scripts.UiElements.Sliders
         protected const string currency = "$";
 
         protected virtual void Awake()
-        {
-            slider = GetComponent<Slider>();
+        {            
             sliderValueText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Value));
             sliderDescriptionText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Description));
 
             SetValueText();
             SetDescriptionText();
 
-            slider.onValueChanged.AddListener(delegate { SetValueText(); });
+            onValueChanged.AddListener(delegate { SetValueText(); });
         }
 
         public float GetSliderAmount()
         {
-            return slider.value * sliderValueMultiplier;
+            return value * sliderValueMultiplier;
         }
 
         public SliderEvent GetSliderEvent()
         {
-            return slider.onValueChanged;
+            return onValueChanged;
         }
 
         public void SetSliderIntervalValues(float minValue, float maxValue)
         {
-            slider.minValue = minValue;
-            slider.maxValue = maxValue;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
         }
 
         public void SetSliderCurrentValue(float value)
         {
-            slider.value = value;
+            this.value = value;
         }
 
         public float GetSliderCurrentValue()
         {
-            return slider.value;
+            return this.value;
         }
 
         public void SetSliderMultiplier(float sliderValueMultiplier)

@@ -9,12 +9,12 @@ namespace Assets.Scripts.UiElements.Screens
     public class PercentageDivisionSlidersScreen : Screen
     {       
         [SerializeField]
-        private FixedValueSlider mainValueSlider;
+        private FixedCustomSlider mainValueSlider;
 
         [SerializeField]
-        private List<BasicSlider> percentageSliders;
+        private List<CustomSlider> percentageSliders;
 
-        private Dictionary<BasicSlider, float> slidersPreviousValue;
+        private Dictionary<CustomSlider, float> slidersPreviousValue;
 
         private const float valueSliderMinValue = 1;
         private const float valueSliderMaxValue = 5;
@@ -30,7 +30,7 @@ namespace Assets.Scripts.UiElements.Screens
         {
             isUpdating = false;       
 
-            slidersPreviousValue = new Dictionary<BasicSlider, float>();
+            slidersPreviousValue = new Dictionary<CustomSlider, float>();
             ConfigureMainSlider();
             ConfigurePercentageSliders();
         }     
@@ -64,14 +64,16 @@ namespace Assets.Scripts.UiElements.Screens
                 }
             }
         }
-        private void ConfigureSlider(BasicSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier)
+
+        private void ConfigureSlider(CustomSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier)
         {
             slider.SetSliderIntervalValues(minValue, maxValue);
             slider.SetSliderMultiplier(valueMultiplier);
             slider.SetSliderCurrentValue(currentValue);
+            slider.RefreshValueText();
         }
 
-        private void ConfigurePercentageSlider(BasicSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier = 0)
+        private void ConfigurePercentageSlider(CustomSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier = 0)
         {
             ConfigureSlider(slider, minValue, maxValue, currentValue, valueMultiplier);
 
@@ -116,7 +118,7 @@ namespace Assets.Scripts.UiElements.Screens
             }
         } 
         
-        private void UpdateOtherSliders(BasicSlider currentSlider, float sliderPreviousValue)
+        private void UpdateOtherSliders(CustomSlider currentSlider, float sliderPreviousValue)
         {
             var numberOfSlidersToDivide = percentageSliders.Count() - 1;
 

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Assets.Scripts.UiElements.Sliders
 {
-    public class FixedValueSlider : BasicSlider
+    public class FixedCustomSlider : CustomSlider
     {
         protected override void Awake()
         {
@@ -16,7 +13,7 @@ namespace Assets.Scripts.UiElements.Sliders
 
         private void SetFixedValue()
         {
-            slider.wholeNumbers = true;
+            wholeNumbers = true;
         }
     }
 }
