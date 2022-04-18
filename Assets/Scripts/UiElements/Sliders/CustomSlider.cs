@@ -1,13 +1,13 @@
 ﻿using Assets.Scripts.Helpers;
+using Assets.Scripts.UiElements.Interfaces;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UiElements.Sliders
-{
-   
-    public class CustomSlider : Slider
+{   
+    public class CustomSlider : Slider, ICustomSlider
     {
         [SerializeField]
         protected string description;       
@@ -20,7 +20,7 @@ namespace Assets.Scripts.UiElements.Sliders
 
         protected const string currency = "$";
 
-        protected virtual void Awake()
+        protected void Awake()
         {            
             sliderValueText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Value));
             sliderDescriptionText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Description));
@@ -65,7 +65,12 @@ namespace Assets.Scripts.UiElements.Sliders
         public void RefreshValueText()
         {
             SetValueText();
-        }    
+        }
+        
+        public void SetWholeNumbers()
+        {
+            wholeNumbers = true;
+        }
       
         protected void SetValueText()
         {

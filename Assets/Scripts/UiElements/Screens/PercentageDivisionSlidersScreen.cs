@@ -9,7 +9,7 @@ namespace Assets.Scripts.UiElements.Screens
     public class PercentageDivisionSlidersScreen : Screen
     {       
         [SerializeField]
-        private FixedCustomSlider mainValueSlider;
+        private CustomSlider mainValueSlider;
 
         [SerializeField]
         private List<CustomSlider> percentageSliders;
@@ -37,6 +37,8 @@ namespace Assets.Scripts.UiElements.Screens
 
         private void ConfigureMainSlider()
         {
+            mainValueSlider.SetWholeNumbers();
+
             ConfigureSlider(mainValueSlider, minValue: valueSliderMinValue, maxValue: valueSliderMaxValue, currentValue: 1, valueMultiplier: sliderValueMultiplier);
             var sliderEvent = mainValueSlider.GetSliderEvent();
             sliderEvent.AddListener(delegate { UpdatePercentageSlidersMultiplier(); });
