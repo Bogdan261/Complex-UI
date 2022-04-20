@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.UiElements.Sliders;
+﻿using Assets.Scripts.Helpers.ExtensionMethods;
+using Assets.Scripts.UiElements.Sliders;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -81,18 +82,9 @@ namespace Assets.Scripts.UiElements.Screens
             }
         }
 
-        //this method is duplicate. Need to extract it further
-        private void ConfigureSlider(CustomSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier)
-        {
-            slider.SetIntervalValues(minValue, maxValue);
-            slider.SetValueMultiplier(valueMultiplier);
-            slider.SetCurrentValue(currentValue);
-            slider.RefreshValueText();
-        }
-
         private void ConfigurePercentageSlider(CustomSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier = 0)
         {
-            ConfigureSlider(slider, minValue, maxValue, currentValue, valueMultiplier);
+            slider.ConfigureSlider(minValue, maxValue, currentValue, valueMultiplier);
 
             var sliderEvent = slider.GetSliderEvent();
             sliderEvent.AddListener(delegate { UpdatePercentageSlidersValues(); });

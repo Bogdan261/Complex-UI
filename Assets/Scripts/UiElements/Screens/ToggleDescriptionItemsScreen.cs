@@ -15,12 +15,7 @@ namespace Assets.Scripts.UiElements.Screens
 
         private const float defaultFontSize = 35f;
 
-        private List<TextMeshProUGUI> instantiatedDescriptionItems;
-
-        private void Awake()
-        {
-            instantiatedDescriptionItems = new List<TextMeshProUGUI>();
-        }
+        private List<TextMeshProUGUI> instantiatedDescriptionItems = new List<TextMeshProUGUI>();       
 
         public void DisplayDescriptionItem(string description)
         {
@@ -28,6 +23,19 @@ namespace Assets.Scripts.UiElements.Screens
             instantiatedDescriptionItems.Add(result);
 
             ConfigureDescriptionItem(result, description);
+        }
+
+        public void ClearPreviousDescriptionItems()
+        {
+            if (instantiatedDescriptionItems.Any())
+            {
+                foreach (var instantiatedDescriptionItem in instantiatedDescriptionItems)
+                {
+                    Destroy(instantiatedDescriptionItem.gameObject);
+                }
+
+                instantiatedDescriptionItems = new List<TextMeshProUGUI>();
+            }
         }
 
         private void ConfigureDescriptionItem(TextMeshProUGUI descriptionTextItem, string description)

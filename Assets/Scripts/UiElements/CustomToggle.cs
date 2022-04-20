@@ -11,6 +11,8 @@ namespace Assets.Scripts.UiElements
 {
     public class CustomToggle : Toggle, ICustomToggle
     {
+        public int Id;
+
         public string Name;
 
         public List<string> DescriptionItemsText;          
@@ -27,7 +29,12 @@ namespace Assets.Scripts.UiElements
 
             SetToggleTextSize();           
             SetDescriptionItems(DescriptionItemsText);
-        }      
+        }
+
+        public void SetToggleId(int id)
+        {
+            Id = id;
+        }
 
         public void SetToggleName(string name)
         {
@@ -46,11 +53,13 @@ namespace Assets.Scripts.UiElements
 
         public void SetDescriptionItems(List<string> descriptionItemsText)
         {
+            toggleDescriptionItemsScreen.ClearPreviousDescriptionItems();
+
             foreach (var text in descriptionItemsText)
             {
                 toggleDescriptionItemsScreen.DisplayDescriptionItem(text);
             }
-        }
+        }      
 
         private void SetToggleTextSize()
         {

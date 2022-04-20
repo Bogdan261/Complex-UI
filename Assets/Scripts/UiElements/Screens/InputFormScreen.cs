@@ -1,5 +1,8 @@
-﻿using Assets.Scripts.UiElements.Sliders;
+﻿using Assets.Scripts.Entities;
+using Assets.Scripts.Helpers.ExtensionMethods;
+using Assets.Scripts.UiElements.Sliders;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.UiElements.Screens
@@ -13,60 +16,99 @@ namespace Assets.Scripts.UiElements.Screens
         private const float valueSliderMaxValue = 5;
         private const float sliderValueMultiplier = 40;
 
-        private readonly List<string> causes = new List<string>()
+        private readonly List<string> donationCauses = new List<string>()
         {
             "Redaction",
+            "Africa",
             "Nature"
         };
 
+        private readonly List<DonationsPackage> donationsPackages = new List<DonationsPackage>()
+        {
+            new DonationsPackage(
+               1,
+               "Redaction's bread",
+               new List<(string, float)>{("Redaction", 60), ("Africa", 20), ("Nature", 20)}
+            ),
+            new DonationsPackage(
+               2,
+               "Africa's water",
+               new List<(string, float)>{("Redaction", 30), ("Africa", 60), ("Nature", 10)}
+            ),
+            new DonationsPackage(
+               3,
+               "Nature Lovers",
+               new List<(string, float)>{("Redaction", 30), ("Africa", 10), ("Nature", 60)}
+            ),
+        };
+
+
         private void Awake()
         {           
-            ConfigureMainSlider();
+            ConfigureMainSlider();           
+        }
+
+        private void Start()
+        {           
+            CreateTogglesForCauses();
 
             CreatePercentageSlidersForCauses();
-            CreateCheckboxesForCauses();        
 
-            PercentageDivisionSlidersScreen.Instance.enabled = true;
+            PercentageDivisionSlidersScreen.Instance.gameObject.SetActive(false);
         }
 
         private void CreatePercentageSlidersForCauses()
         {
-            foreach(var cause in causes)
+            foreach(var cause in donationCauses)
             {
                 PercentageDivisionSlidersScreen.Instance.InstantiatePercentageSlider(cause);
             }
         }
 
-        private void CreateCheckboxesForCauses()
+        private void CreateTogglesForCauses()
         {
-            var i = 0;
-            var percentage = 50f;
+            var isFirstToggle = true;
 
-            foreach (var cause in causes) //here needs to be "cause package", not create a checkbox for every cause
+            foreach (var package in donationsPackages)
             {
-                var description = new List<string>();
-                foreach (var cause2 in causes)
-                {
-                    description.Add((mainValueSlider.GetTotalAmount() * percentage / 100).ToString() + "$ for " + cause2);
-                }
-                ToggleGroupScreen.Instance.InstantiateToggle("More to " + cause, i == 0, description);
+                var descriptionItems = CreateDescriptionItems(package.CausePercentages);
+
+                ToggleGroupScreen.Instance.InstantiateToggle(package.Id, package.PackageName, isFirstToggle, descriptionItems);
+
+                isFirstToggle = false;
+            }
+        }
+
+        private void UpdateTogglesForCausesValues()
+        {
+            foreach (var package in donationsPackages)
+            {
+                var descriptionItems = CreateDescriptionItems(package.CausePercentages);
+
+                ToggleGroupScreen.Instance.UpdateToggleDescription(package.Id, descriptionItems);                
             }
         }
 
         private void ConfigureMainSlider()
         {
-            mainValueSlider.SetWholeNumbers();
+            mainValueSlider.SetWholeNumbers();          
 
-            ConfigureSlider(mainValueSlider, minValue: valueSliderMinValue, maxValue: valueSliderMaxValue, currentValue: 1, valueMultiplier: sliderValueMultiplier);        
-        }      
-
-        //this method is duplicate. Need to extract it further
-        private void ConfigureSlider(CustomSlider slider, float minValue, float maxValue, float currentValue, float valueMultiplier)
+            mainValueSlider.ConfigureSlider(minValue: valueSliderMinValue, maxValue: valueSliderMaxValue, currentValue: 1, valueMultiplier: sliderValueMultiplier);
+            
+            var mainValueSliderEvent = mainValueSlider.GetSliderEvent();
+            mainValueSliderEvent.AddListener(delegate { UpdateTogglesForCausesValues(); });
+        }
+        
+        private List<string> CreateDescriptionItems(List<(string,float)> causePercentages)
         {
-            slider.SetIntervalValues(minValue, maxValue);
-            slider.SetValueMultiplier(valueMultiplier);
-            slider.SetCurrentValue(currentValue);
-            slider.RefreshValueText();
+            var descriptionItems = new List<string>();
+
+            foreach (var causeSeparation in causePercentages)
+            {
+                descriptionItems.Add(causeSeparation.Item1 + ": " + (mainValueSlider.GetTotalAmount() * causeSeparation.Item2 / 100).ToString());
+            }
+
+            return descriptionItems;
         }
     }
 }
