@@ -30,15 +30,14 @@ namespace Assets.Scripts.UiElements.Screens
         private void Awake()
         {
             instantiatedPercentageSliders = new List<CustomSlider>();
+            slidersPreviousValue = new Dictionary<CustomSlider, float>();
 
             DefineSingleton();
         }
 
-        private void Start()
+        public void NoNameIdeea()
         {
-            isUpdating = false;
-
-            slidersPreviousValue = new Dictionary<CustomSlider, float>();
+            isUpdating = false;            
 
             AddMainSliderListener();
 

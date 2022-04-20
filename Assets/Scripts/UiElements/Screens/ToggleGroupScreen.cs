@@ -22,7 +22,7 @@ namespace Assets.Scripts.UiElements.Screens
             InstantiatedToggles = new List<CustomToggle>();
         }     
 
-        public void InstantiateToggle(int id, string toggleName, bool isOn, List<string> descriptionItemsText)
+        public CustomToggle InstantiateToggle(int id, string toggleName, bool isOn, List<string> descriptionItemsText)
         {
             var result = Instantiate(togglePrefab);           
             InstantiatedToggles.Add(result);
@@ -33,7 +33,9 @@ namespace Assets.Scripts.UiElements.Screens
             result.SetToggleOnOff(isOn);
             result.SetToggleGroup(this);
 
-            result.SetDescriptionItems(descriptionItemsText);           
+            result.SetDescriptionItems(descriptionItemsText);
+
+            return result;
         }
 
         public void UpdateToggleDescription(int id, List<string> descriptionItemsText)

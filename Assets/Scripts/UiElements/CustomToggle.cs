@@ -28,7 +28,7 @@ namespace Assets.Scripts.UiElements
             titleLabelText = GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.CompareTag(ProjectTags.Title));
 
             SetToggleTextSize();           
-            SetDescriptionItems(DescriptionItemsText);
+            SetDescriptionItems(DescriptionItemsText);            
         }
 
         public void SetToggleId(int id)

@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.Entities;
+﻿using Assets.Scripts.Commands;
+using Assets.Scripts.Entities;
 using Assets.Scripts.Helpers.ExtensionMethods;
 using Assets.Scripts.UiElements.Sliders;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.UiElements.Screens
@@ -15,6 +15,8 @@ namespace Assets.Scripts.UiElements.Screens
         private const float valueSliderMinValue = 1;
         private const float valueSliderMaxValue = 5;
         private const float sliderValueMultiplier = 40;
+
+        private SwitchObjectActiveStateCommand percentageSlidersActiveStateCommand;
 
         private readonly List<string> donationCauses = new List<string>()
         {
@@ -52,7 +54,17 @@ namespace Assets.Scripts.UiElements.Screens
         {           
             CreateTogglesForCauses();
 
+            CreateToggleForPercentageSliders();
+
             CreatePercentageSlidersForCauses();
+
+            ConfigurePercentageSlidersActivation();
+        }
+
+        private void ConfigurePercentageSlidersActivation()
+        {
+            percentageSlidersActiveStateCommand = new SwitchObjectActiveStateCommand();
+            percentageSlidersActiveStateCommand.SetGameObject(PercentageDivisionSlidersScreen.Instance.gameObject);
 
             PercentageDivisionSlidersScreen.Instance.gameObject.SetActive(false);
         }
@@ -63,6 +75,14 @@ namespace Assets.Scripts.UiElements.Screens
             {
                 PercentageDivisionSlidersScreen.Instance.InstantiatePercentageSlider(cause);
             }
+            PercentageDivisionSlidersScreen.Instance.NoNameIdeea();
+        }
+
+        private void CreateToggleForPercentageSliders()
+        {
+            var toggle = ToggleGroupScreen.Instance.InstantiateToggle(-1, "Custom Sliders", isOn: false, new List<string>());
+
+            toggle.onValueChanged.AddListener(delegate { percentageSlidersActiveStateCommand.Execute(); });
         }
 
         private void CreateTogglesForCauses()
