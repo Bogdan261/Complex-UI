@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Managers;
 using Assets.Scripts.UiElements.Interfaces;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +8,21 @@ namespace Assets.Scripts.UiElements.Screens
 {
     public class PopUpScreen : Screen, IPopUp
     {
+        public string MessageText;
+        
         [SerializeField]
-        private Screen imageDisplay;
+        private Screen imageDisplayPanel;
 
-        private Image instantiatedImage;
+        [SerializeField]
+        private TextMeshProUGUI message;
+
+
+        private Image instantiatedImage;        
 
         private void OnEnable()
         {
             DisplayImage();
+            SetText();
         }            
 
         private void OnDisable()
@@ -22,16 +30,27 @@ namespace Assets.Scripts.UiElements.Screens
             DestroyImage();
         }
 
+        private void SetText()
+        {
+            message.text = MessageText;
+        }
+
         private void DisplayImage()
         {
-            var imageToShow = ImagesScreenManager.Instance.ImageToDisplay;
-            instantiatedImage = Instantiate(imageToShow);
-            instantiatedImage.transform.SetParent(imageDisplay.transform);
+            if (PopUpScreenManager.Instance.ImageToDisplay != null)
+            {
+                var imageToShow = PopUpScreenManager.Instance.ImageToDisplay;
+                instantiatedImage = Instantiate(imageToShow);
+                instantiatedImage.transform.SetParent(imageDisplayPanel.transform);
+            }
         }
 
         private void DestroyImage()
         {
-            Destroy(instantiatedImage.gameObject);
+            if (instantiatedImage != null)
+            {
+                Destroy(instantiatedImage.gameObject);
+            }
         }
     }
 }

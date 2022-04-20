@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Managers
 {
-    public class ImagesScreenManager : ScreenManager
+    public class PopUpScreenManager : ScreenManager
     {
-        public static ImagesScreenManager Instance;
+        public static PopUpScreenManager Instance;
 
         [HideInInspector]
         public ImagesListSO ImagesListSO;

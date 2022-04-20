@@ -10,7 +10,7 @@ namespace Assets.Scripts.Commands
 
         public void Execute()
         {
-            ImagesScreenManager.Instance.ImagesListSO = imagesList;
+            PopUpScreenManager.Instance.ImagesListSO = imagesList;
         }
 
         public void SetImagesList(ImagesListSO imagesList)

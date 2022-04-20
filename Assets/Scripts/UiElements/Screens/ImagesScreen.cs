@@ -33,7 +33,7 @@ namespace Assets.Scripts.UiElements.Screens
 
         private void DisplayImages()
         {
-            foreach (var image in ImagesScreenManager.Instance.ImagesListSO.ImagesList)
+            foreach (var image in PopUpScreenManager.Instance.ImagesListSO.ImagesList)
             {
                 var result = Instantiate(image);
                 instantiatedImages.Add(result);

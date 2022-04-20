@@ -14,7 +14,7 @@ namespace Assets.Scripts.UiElements.Behaviors
         public void SetTargetPopUp(PopUpScreen popUpScreen, Image imageToShow)
         {
             base.SetTargetPopUp(popUpScreen);
-            ImagesScreenManager.Instance.ImageToDisplay = imageToShow;
+            PopUpScreenManager.Instance.ImageToDisplay = imageToShow;
         }
     }
 }
